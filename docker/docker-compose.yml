@@ -1,0 +1,149 @@
+version: '3'
+services:
+  # vod: 
+  #   image: nytimes/nginx-vod-module:latest
+  #   build:
+  #     context: ./vod/docker/
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8080:80"
+  #   volumes:
+  #     - ./vod/nginx.conf:/usr/local/nginx/conf/nginx.conf
+  #     - data2:/opt/static
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis/redis.conf:/etc/redis/redis.conf
+      - ./redis/data:/data
+    restart: always
+    command: redis-server /etc/redis/redis.conf
+  mysql:
+    image: mysql:8.0.19
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: dp123
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/my.ini:/etc/my.cnf
+    ports:
+      - 3306:3306
+  elasticsearch:
+    image: elasticsearch-ik-pinyin
+    build:
+      context: ./elasticsearch/
+      dockerfile: Dockerfile
+    privileged: true
+    restart: always
+    environment:
+      "discovery.type": "single-node"
+      "ES_JAVA_POTS": "-Xms256m -Xmx256m"
+    volumes:
+      - esData2:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.100
+        ipv6_address:  2001:3984:3989::100
+  minio1:
+    image: minio/minio
+    ports:
+      - 9001:9000
+    volumes:
+      - data1:/data
+    restart: always
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.3
+        ipv6_address: 2001:3984:3989::3
+    command: server /data/minio/
+    # http://172.16.238.6/data http://172.16.238.7/data http://172.16.238.9/data
+    environment:
+      MINIO_ACCESS_KEY: deepblueai
+      MINIO_SECRET_KEY: deepblueai123
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+  # minio2:
+  #   image: minio/minio
+  #   restart: always
+  #   ports:
+  #     - 9002:9000
+  #   volumes:
+  #     - data2:/data
+  #   networks:
+  #     app_net:
+  #       ipv4_address: 172.16.238.6
+  #       ipv6_address: 2001:3984:3989::6
+  #   command: server http://172.16.238.3/data http://172.16.238.6/data http://172.16.238.7/data http://172.16.238.9/data
+  #   environment:
+  #     MINIO_ACCESS_KEY: deepblueai
+  #     MINIO_SECRET_KEY: deepblueai123
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://127.0.0.1:9000/minio/health/live"]
+  #     interval: 30s
+  #     timeout: 20s
+  #     retries: 3
+  # minio3:
+  #   image: minio/minio
+  #   restart: always
+  #   ports:
+  #     - 9003:9000
+  #   volumes:
+  #     - data3:/data
+  #   networks:
+  #     app_net:
+  #       ipv4_address: 172.16.238.7
+  #       ipv6_address: 2001:3984:3989::7
+  #   command: server http://172.16.238.3/data http://172.16.238.6/data http://172.16.238.7/data http://172.16.238.9/data
+  #   environment:
+  #     MINIO_ACCESS_KEY: deepblueai
+  #     MINIO_SECRET_KEY: deepblueai123
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://127.0.0.1:9000/minio/health/live"]
+  #     interval: 30s
+  #     timeout: 20s
+  #     retries: 3
+  # minio4:
+  #   image: minio/minio
+  #   restart: always
+  #   ports:
+  #     - 9004:9000
+  #   volumes:
+  #     - data4:/data
+  #   networks:
+  #     app_net:
+  #       ipv4_address: 172.16.238.9
+  #       ipv6_address: 2001:3984:3989::9
+  #   command: server http://172.16.238.3/data http://172.16.238.6/data http://172.16.238.7/data http://172.16.238.9/data
+  #   environment:
+  #     MINIO_ACCESS_KEY: deepblueai
+  #     MINIO_SECRET_KEY: deepblueai123
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://127.0.0.1:9000/minio/health/live"]
+  #     interval: 30s
+  #     timeout: 20s
+  #     retries: 3
+volumes:
+  data1: 
+    driver: local
+  data2:
+    driver: local
+  data3:
+    driver: local
+  data4:
+    driver: local
+  esData2:
+    driver: local
+networks:
+  app_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.238.0/24"
+        - subnet: "2001:3984:3989::/64"

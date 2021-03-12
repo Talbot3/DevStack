@@ -1,0 +1,1 @@
+docker run -p 4444:80 -v /home/deepblue/Data/out:/opt/static/videos/ -v $PWD/nginx.conf:/usr/local/nginx/conf/nginx.conf nytimes/nginx-vod-module

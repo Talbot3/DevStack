@@ -1,0 +1,9 @@
+mongo:
+    image: mongo:4.4.1-bionic
+
+mongoexpress:
+    image: mongo-express:0.54
+    ports:
+        - "8081:8081"
+    links:
+        - mongo

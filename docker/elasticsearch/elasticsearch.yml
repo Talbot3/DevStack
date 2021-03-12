@@ -1,0 +1,5 @@
+cluster.name: elasticsearch_dev
+xpack.security.enabled: false
+path:
+    logs: /var/log/elasticsearch
+    data: /var/data/elasticsearch
