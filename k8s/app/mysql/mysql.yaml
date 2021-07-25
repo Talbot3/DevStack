@@ -57,11 +57,12 @@ spec:
 apiVersion: v1
 data:
   initdb.sql: |
-    create user "hrms"@"%"identified by "deepblue";
-    grant select,insert,update,delete,create,index,alter  ON *.* TO "hrms"@"%";
+    create user 'hrms'@'%'identified by 'deepblue';
+    grant select,insert,update,delete,create,index,alter  ON *.* TO 'hrms'@'%';
     flush privileges;
 kind: ConfigMap
 metadata:
+  namespace: education-infra
   name: mysql-initdb-config
 ---
 apiVersion: v1
@@ -98,4 +99,3 @@ spec:                   #必须
       port: 3306
       targetPort: 3306
       nodePort: 31092
-
