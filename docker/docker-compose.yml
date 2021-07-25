@@ -11,7 +11,7 @@ services:
   #     - ./vod/nginx.conf:/usr/local/nginx/conf/nginx.conf
   #     - data2:/opt/static
   redis:
-    image: redis
+    image: arm64v8/redis
     ports:
       - "6379:6379"
     volumes:
@@ -20,7 +20,7 @@ services:
     restart: always
     command: redis-server /etc/redis/redis.conf
   mysql:
-    image: mysql:8.0.19
+    image: mysql/mysql-server
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: dp123

@@ -13,3 +13,8 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+k8s-for-docker-desktop**
+docker-compose**
+docker/nebula-docker-compose
+docker/mysql/data**
+**data**

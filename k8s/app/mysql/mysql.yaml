@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: hrms-mysql
+  namespace: education-infra
+spec:
+  serviceName: hrms-mysql
+  selector:
+    matchLabels:
+      app: hrms-mysql
+      release: infra
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hrms-mysql
+        release: infra
+    spec:
+      containers:
+        - name: hrms-mysql
+          image: core.harbor.cz.shenlan.com/dbp-edu/mysql:8.0
+          volumeMounts:
+            - name: hrms-mysql-data-pvc
+              mountPath: /var/lib/mysql
+            - name: vol-conf
+              mountPath: /etc/mysql/
+            - name: mysql-initdb
+              mountPath: /docker-entrypoint-initdb.d
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: deepblue
+            - name: TZ
+              value: Asia/Shanghai
+          ports:
+            - name: tcp-essential
+              containerPort: 3306
+              protocol: TCP
+      volumes:
+        - name: vol-conf
+          hostPath:
+            path: /var/tmp
+            type: Directory
+        - name: mysql-initdb
+          configMap:
+            name: mysql-initdb-config
+  # Volume Claim
+  volumeClaimTemplates:
+  - metadata:
+      name: hrms-mysql-data-pvc
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: hostpath
+      resources:
+        requests:
+          storage: 2Gi
+---
+apiVersion: v1
+data:
+  initdb.sql: |
+    create user "hrms"@"%"identified by "deepblue";
+    grant select,insert,update,delete,create,index,alter  ON *.* TO "hrms"@"%";
+    flush privileges;
+kind: ConfigMap
+metadata:
+  name: mysql-initdb-config
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: hrms-mysql-data-pv
+  labels:
+    type: local
+spec:
+  storageClassName: hostpath
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/tmp"
+---
+apiVersion: v1            #必须
+kind: Service             #必须
+metadata:                 #必须
+  name: hrms-mysql
+  namespace: education-infra       #必须
+  labels:
+    app: hrms-mysql
+    release: infra
+spec:                   #必须
+  selector:             #必须
+    app: hrms-mysql
+    release: infra
+  type: NodePort        #必须
+  ports:
+    - name: tcp-essential
+      protocol: TCP
+      port: 3306
+      targetPort: 3306
+      nodePort: 31092
+
