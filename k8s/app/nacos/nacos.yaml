@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: hrms-nacos
+  namespace: education-infra
+spec:
+  serviceName: hrms-nacos
+  selector:
+    matchLabels:
+      app: hrms-nacos
+      release: infra
+  replicas: 1

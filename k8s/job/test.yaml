@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-demo
+spec:
+  template:
+    spec:
+      containers:
+      - name: myjob
+        image: ikubernetes/admin-toolbox:v1.0
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh", "-c", "sleep 60"]
+      restartPolicy: Never
+  completions: 3
+  parallelism: 2
+  ttlSecondsAfterFinished: 360   # Job的留存时长，超过该时长将被自动删除；  
+  backoffLimit: 3   # 将作业标记为失败状态之前的重试次数，默认值为6；
+  activeDeadlineSeconds: 300 

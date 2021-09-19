@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hrms-redis
+  namespace: education-infra
+spec:
+  selector: 
+    matchLabels:
+      app: hrms-redis
+      release: infra 
+  replicas: 1
+  template:
+    metadata: 
+      labels: 
+        app: hrms-redis
+        release: infra
+    spec:
+      imagePullSecrets:
+        - name: core-harbor-secret
+      containers:
+        - name: hrms-redis
+          image: redis:6
+          ports:
+          - name: tcp-essential
+            containerPort: 6379
+            protocol: TCP
+---
+apiVersion: v1            #必须
+kind: Service             #必须
+metadata:                 #必须
+  name: hrms-redis
+  namespace: education-infra       #必须
+  labels:
+    app: hrms-redis
+    release: infra
+spec:                   #必须
+  selector:             #必须
+    app: hrms-redis
+    release: infra
+  type: NodePort        #必须
+  ports:
+    - name: tcp-essential
+      protocol: TCP
+      port: 6379
+      targetPort: 6379
+      nodePort: 31099
