@@ -8,13 +8,13 @@ fi
 jenkins_image="jenkins/jenkins:jdk21"
 
 # Check if the Jenkins image has been pulled
-if [ ! "$(docker images | grep $jenkins_image)" ]; then
+if [ ! "$(docker images | grep jenkins/jenkins" ]; then
   echo "Pulling Jenkins image..."
   docker pull $jenkins_image
 fi
 
 # Create a new container for Jenkins
-docker run -d --name jenkins -p 8080:8080 $jenkins_image
+docker run -d --name jenkins -p 8080:8080 -p 50000:50000 $jenkins_image
 
 # Wait for Jenkins to start
 echo "Waiting for Jenkins to start..."
