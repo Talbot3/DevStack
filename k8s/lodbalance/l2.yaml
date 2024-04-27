@@ -1,0 +1,44 @@
+apiVersion: network.kubesphere.io/v1alpha2
+kind: Eip
+metadata:
+    # Eip 对象的名称。
+    name: eip-layer2-pool
+spec:
+    # Eip 对象的地址池
+    address: 10.31.88.101-10.31.88.200
+
+    # openELB的运行模式，默认为bgp
+    protocol: layer2
+
+    # OpenELB 在其上侦听 ARP/NDP 请求的网卡。该字段仅在protocol设置为时有效layer2。
+    interface: eth0
+
+    # 指定是否禁用 Eip 对象
+    # false表示可以继续分配
+    # true表示不再继续分配
+    disable: false
+    
+status:
+
+    # 指定 Eip 对象中的IP地址是否已用完。
+    occupied: false
+
+    # 指定 Eip 对象中有多少个 IP 地址已分配给服务。
+    # 直接留空，系统会自动生成
+    usage: 
+
+    # Eip 对象中的 IP 地址总数。
+    poolSize: 100
+
+    # 指定使用的 IP 地址和使用 IP 地址的服务。服务以Namespace/Service name格式显示（例如，default/test-svc）。
+    # 直接留空，系统会自动生成
+    used: 
+
+    # Eip 对象中的第一个 IP 地址。
+    firstIP: 10.31.88.101
+    # Eip 对象中的最后一个 IP 地址。
+    lastIP: 10.31.88.200
+
+    ready: true
+    # 指定IP协议栈是否为 IPv4。目前，OpenELB 仅支持 IPv4，其值只能是true.
+    v4: true

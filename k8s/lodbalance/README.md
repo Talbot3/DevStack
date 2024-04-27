@@ -23,3 +23,11 @@ kubectl create ingress demo-localhost --class=nginx --rule="demo.localdev.me/*=d
  kubectl delete -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/config/manifests/metallb-native.yaml
 
 ```
+
+
+## Docker自带Loadbalance
+
+```
+# 测试命令，然后打开localhost,将可直接访问容器
+kubectl apply -f  k8s/lodbalance/l2-nginx.yaml
+```
