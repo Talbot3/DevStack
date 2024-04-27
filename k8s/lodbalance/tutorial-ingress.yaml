@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tutorial-localhost
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: tutorial.localdev.me
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: tutorial
+              servicePort: 80
