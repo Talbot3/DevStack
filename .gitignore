@@ -20,3 +20,4 @@ docker-compose**
 docker/nebula-docker-compose
 docker/mysql/data**
 **data**
+**/.DS_Store
