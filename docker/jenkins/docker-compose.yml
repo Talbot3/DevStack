@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # Jenkins 主节点
+  jenkins:
+    platform: linux/arm64
+    image: jenkins/jenkins:lts-jdk17
+    container_name: jenkins
+    privileged: true
+    user: root
+    environment:
+      - TZ=Asia/Shanghai
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - ./jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./docker-ce-cli:/usr/bin/docker
+      - ./ssh-keys/jenkins.pub:/root/.ssh/authorized_keys  # SSH公钥
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    networks:
+      - jenkins-net
+
+  # Jenkins Agent 1 (Docker-in-Docker)
+  jenkins-agent-1:
+    platform: linux/arm64
+    image: jenkins/ssh-agent:alpine  # 官方ARM版Agent镜像
+    container_name: jenkins-agent-1
+    privileged: true
+    user: root
+    environment:
+      - JENKINS_AGENT_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1...  # 替换为你的公钥
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./docker-ce-cli:/usr/bin/docker
+    networks:
+      - jenkins-net
+    depends_on:
+      - jenkins
+
+networks:
+  jenkins-net:
+    driver: bridge
+
+volumes:
+  jenkins_home:
+  docker-ce-cli:

@@ -1,0 +1,26 @@
+version: "3"
+services:
+  # 服务名称
+  nexus3:
+    # 镜像
+    image: sonatype/nexus3
+    # 容器名称
+    container_name: dnexus3
+    # 重启策略
+    restart: on-failure
+    # 端口映射
+    ports:
+      # web服务使用
+      - "8081:8081"
+      # http仓库使用
+      - "8082:8082"
+      # https仓库使用，本例不使用，用于 Docker 镜像上传
+      - "5000:5000"
+    # 挂载数据卷
+    volumes:
+      # 将主机的/opt/neuxus3/data目录挂载映射到容器的/nexus-data目录
+      - ./data:/nexus-data
+    # 设置环境变量
+    environment:
+      # 配置nexus3服务的内存，避免小规格机器崩掉
+      INSTALL4J_ADD_VM_PARAMS: "-Xms512m -Xmx512m -XX:MaxDirectMemorySize=512m -Djava.util.prefs.userRoot=/nexus-data/javaprefs"
