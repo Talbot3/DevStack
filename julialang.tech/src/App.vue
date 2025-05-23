@@ -228,7 +228,7 @@
 import { ref } from 'vue';
 
 const isMobileMenuOpen = ref(false);
-const showLoginModal = ref(true);
+const showLoginModal = ref(false);
 const showRegisterModal = ref(false);
 
 const toggleMenu = () => {
@@ -368,6 +368,9 @@ body {
 .register-btn {
   text-decoration: none;
   font-weight: 500;
+  padding-top: 6px;
+  color: #0079ff;
+  font-size: x-large;
 }
 .register-btn {
   background-color: #4f46e5;
