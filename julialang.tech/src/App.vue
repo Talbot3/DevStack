@@ -31,8 +31,8 @@
           <a href="#features" @click="toggleMenu">优势</a>
           <a href="#pricing" @click="toggleMenu">价格</a>
           <a href="#contact" @click="toggleMenu">联系</a>
-          <a href="#" @click="toggleMenu">登录</a>
-          <a href="#" @click="toggleMenu">注册</a>
+          <a href="#" @click="showLoginModal = true;">登录</a>
+          <a href="#" @click="showRegisterModal = true;">注册</a>
         </div>
       </transition>
     </header>
@@ -196,6 +196,31 @@
         </div>
       </div>
     </footer>
+      <!-- Login Modal -->
+    <div v-if="showLoginModal" class="modal-overlay" @click.self="showLoginModal = false">
+      <div class="modal">
+        <h3>用户登录</h3>
+        <form @submit.prevent="handleLogin">
+          <input type="email" placeholder="邮箱" required />
+          <input type="password" placeholder="密码" required />
+          <button type="submit" class="btn primary full-width">登录</button>
+          <p class="switch-link">还没有账号？<a href="#" @click="showLoginModal = false; showRegisterModal = true">去注册</a></p>
+        </form>
+      </div>
+    </div>
+    <!-- Register Modal -->
+    <div v-if="showRegisterModal" class="modal-overlay" @click.self="showRegisterModal = false">
+      <div class="modal">
+        <h3>用户注册</h3>
+        <form @submit.prevent="handleRegister">
+          <input type="text" placeholder="用户名" required />
+          <input type="email" placeholder="邮箱" required />
+          <input type="password" placeholder="密码" required />
+          <button type="submit" class="btn primary full-width">注册</button>
+          <p class="switch-link">已有账号？<a href="#" @click="showRegisterModal = false; showLoginModal = true">去登录</a></p>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -203,9 +228,21 @@
 import { ref } from 'vue';
 
 const isMobileMenuOpen = ref(false);
+const showLoginModal = ref(true);
+const showRegisterModal = ref(false);
 
 const toggleMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value;
+};
+
+const handleLogin = () => {
+  alert('登录成功');
+  showLoginModal.value = false;
+};
+
+const handleRegister = () => {
+  alert('注册成功');
+  showRegisterModal.value = false;
 };
 
 const liveServices = [
@@ -610,5 +647,46 @@ body {
   color:#dcfce7;
   padding: 12px 24px;
 }
+/* Modals */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+.modal {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+}
+.modal h3 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.modal input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.switch-link {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+.switch-link a {
+  color: #4f46e5;
+  text-decoration: underline;
+}
+
 
 </style>
