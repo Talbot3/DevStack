@@ -4,7 +4,10 @@
     <header class="header">
       <h6 class="public-said">①服务内测中...🇨🇳</h6>
       <div class="container header-content">
-        <h1 class="logo">JULIA</h1>
+        <h1 class="logo">
+          <img src="/icon.jpeg" width="48" height="48"/>
+          <span>JULIA</span>
+        </h1>
 
         <!-- Desktop Nav -->
         <nav class="desktop-nav">
@@ -350,6 +353,9 @@ body {
   font-size: 1.5rem;
   color: #4f46e5;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+
 }
 .desktop-nav {
   display: flex;
