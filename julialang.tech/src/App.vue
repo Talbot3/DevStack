@@ -16,8 +16,8 @@
 
         <!-- Auth Buttons -->
         <div class="auth-buttons">
-          <a href="#" class="login-btn">登录</a>
-          <a href="#" class="register-btn">注册</a>
+          <a href="#" class="login-btn" @click="showLoginModal = true">登录</a>
+          <a href="#" class="register-btn" @click="showRegisterModal = true">注册</a>
         </div>
 
         <!-- Mobile Menu Toggle -->
@@ -31,8 +31,8 @@
           <a href="#features" @click="toggleMenu">优势</a>
           <a href="#pricing" @click="toggleMenu">价格</a>
           <a href="#contact" @click="toggleMenu">联系</a>
-          <a href="#" @click="showLoginModal = true;">登录</a>
-          <a href="#" @click="showRegisterModal = true;">注册</a>
+          <a href="#" @click="showLoginModal = true">登录</a>
+          <a href="#" @click="showRegisterModal = true">注册</a>
         </div>
       </transition>
     </header>
@@ -196,7 +196,7 @@
         </div>
       </div>
     </footer>
-      <!-- Login Modal -->
+    <!-- Login Modal -->
     <div v-if="showLoginModal" class="modal-overlay" @click.self="showLoginModal = false">
       <div class="modal">
         <h3>用户登录</h3>
