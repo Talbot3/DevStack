@@ -116,7 +116,7 @@
     </section>
     <!-- Pricing Section -->
     <section id="pricing" class="pricing-section">
-      <div class="container">
+      <div class="section-title">
         <h2 class="section-title">价格计划</h2>
         <p class="section-subtitle">简单透明的定价策略</p>
 
@@ -568,6 +568,10 @@ body {
 }
 
 /* Footer */
+.footer h3 {
+  font-size: x-large;
+  color: #232ea3;
+}
 .footer {
   background-color: white;
   padding: 40px 20px;
@@ -637,7 +641,7 @@ body {
   text-align: center;
 }
 .pricing-card h3 {
-  font-size: 1.5rem;
+  font-size: x-large;
   margin-bottom: 20px;
 }
 
@@ -695,6 +699,78 @@ body {
 .switch-link a {
   color: #4f46e5;
   text-decoration: underline;
+}
+
+
+/* Dark Mode Styles */
+@media (prefers-color-scheme: dark) {
+
+  body {
+    color: #e5e7eb;
+    background-color: #b2c5f1;
+    background: #e6c8a5;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    color: #232ea3;
+    margin-bottom: 10px;
+    font-weight:bold;
+  }
+  /* Services */
+  .services-section {
+    padding: 60px 20px;
+    background: #b6c5e1;
+    color: #e5e7eb;
+  }
+
+  .header,
+  .hero,
+  .pricing-section,
+  .contact-section,
+  .cta-full,
+  .footer {
+    background-color: #1f2937;
+    color: #e5e7eb;
+  }
+
+  .desktop-nav a {
+    color: #d1d5db;
+  }
+
+  .service-card,
+  .feature-box,
+  .modal {
+    background: #374151;
+    color: #e5e7eb;
+  }
+
+  .logo {
+    color: #a5b4fc;
+  }
+
+  .btn.primary {
+    background-color: #818cf8;
+    color: white;
+  }
+
+  .btn.secondary {
+    color: #818cf8;
+    border-color: #818cf8;
+  }
+
+  input,
+  textarea {
+    background-color: #1f2937;
+    color: white;
+    border-color: #4b5563;
+  }
+
+  .footer ul li a {
+    text-decoration: none;
+    color: #e5e7eb;
+    border-color: #4b5563;
+  }
 }
 
 
