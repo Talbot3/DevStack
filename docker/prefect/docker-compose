@@ -1,0 +1,23 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: prefect
+      POSTGRES_PASSWORD: prefect
+      POSTGRES_DB: prefect
+    ports:
+      - "5432:5432"
+
+  prefect-server:
+    image: prefecthq/prefect:latest
+    command: prefect server start --host 0.0.0.0 --use-volume
+    environment:
+      PREFECT_SERVER_DB_HOST: postgres
+      PREFECT_SERVER_DB_USERNAME: prefect
+      PREFECT_SERVER_DB_PASSWORD: prefect
+      PREFECT_SERVER_DB_NAME: prefect
+    ports:
+      - "4200:4200"
+    depends_on:
+      - postgres
